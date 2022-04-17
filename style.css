@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Karla', sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/images/abstract.jpg');
+    background-size: cover;
+    height: 100vh;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,.8);
+    box-shadow: 1px 2px 8px 2px rgba(0,0,0,.1);
+    padding: 40px;
+    border-radius: 7px;
+    width: auto;
+    height: 200px;
+}
+
+.home h1 {
+    font-size: 64px;
+    font-weight: 900;
+    padding-bottom: 15px;
+}
+
+.home button {
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    background-color: #4bddfa;
+    box-shadow: 1px 2px 5px 2px rgba(0,0,0,.1);
+
+    padding: 5px 20px;
+    border-radius: 4px;
+    border: none;
+    
+}
+
+.home button:hover {
+    cursor: pointer;
+    background-color: #ff87db;
+
+}
+
+footer a {
+    color: black;
+}
+
