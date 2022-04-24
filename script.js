@@ -2,6 +2,7 @@ const startBtn = document.getElementById('start-btn');
 const homeScreen = document.querySelector('.home');
 const gameDisplay = document.querySelector('.game');
 const spaces = document.querySelectorAll('.space');
+const container = document.querySelector('.container');
 
 startBtn.addEventListener('click', e => {
     const hideHomeScreen = homeScreen.style.display = "none";
@@ -10,48 +11,79 @@ startBtn.addEventListener('click', e => {
 
 //Player factory
 const playerFactory = (name, icon, isCurrentPlayer) => {
+    getIcon = () => icon;
+    isPlayersTurn = () => isCurrentPlayer;
     takeTurn = () => {
         console.log("I am taking a turn");
     }
     toggleTurn = () => {
-        name = "bob";
-        isCurrentPlayer = !isCurrentPlayer;
+        if (isCurrentPlayer) {
+            isCurrentPlayer = false;
+        } else if (isCurrentPlayer === false) {
+            isCurrentPlayer = true;
+        }
     }
-    return {name, icon, isCurrentPlayer, takeTurn, toggleTurn}
+    return {getIcon, isPlayersTurn, takeTurn, toggleTurn}
 }
 
 const playerX = playerFactory("Player 1", "X", true);
 const playerO = playerFactory("Player 2", "O", false);
 
 let movesArray = ["","","","","","","","",""];
+let result;
+let finalResult;
+let winner;
 
-createBoard();
+// createBoard();
 
-function createBoard(playerFactory) {
+// function createBoard(playerFactory) {
+
     spaces.forEach(space => {
         space.addEventListener('click', e => {
             if (space.childNodes.length === 0) {
                 const addIcon = document.createElement('h2');
                 addIcon.classList.add('move');
                 space.appendChild(addIcon);
-                addIcon.innerText = "X";
-                let indexNum = +e.target.id - 1;
-                movesArray.splice(indexNum, 1, "X");
-                console.log(movesArray);
+                if(playerX.isPlayersTurn()) {
+                    addIcon.innerText = playerX.getIcon();
+                    let indexNum = +e.target.id - 1;
+                    movesArray.splice(indexNum, 1, playerX.getIcon());
+                    playerX.toggleTurn();
+                    playerO.toggleTurn();
+                    return indexNum;
+                } else {
+                    addIcon.innerText = playerO.getIcon();
+                    let indexNum = +e.target.id - 1;
+                    movesArray.splice(indexNum, 1, playerO.getIcon());
+                    playerO.toggleTurn();
+                    playerX.toggleTurn();
+                    return indexNum;
+                }
             }
             checkThreeInARow();
-            let result;
+            checkForADraw();
+
+            if(result = " wins!") {
+                const winner = movesArray[indexNum];
+                finalResult = winner + result;
+            } else if (result = "It's a draw!") {
+                finalResult = result;
+            }
             
             
-            const resultContainer = document.createElement('div');
-            resultContainer.classList.add('result-container');
-            body.appendChild(resultContainer);
-            const resultMessage = document.createElement('h2');
-            resultMessage.innerText = result;
-            resultContainer.appendChild(resultMessage);
-            const playAgainBtn = document.createElement('button');
-            resultContainer.appendChild(playAgainBtn);
-            playAgainBtn.addEventListener('click', clearBoard);
+            function displayResults() {
+                const resultContainer = document.createElement('div');
+                resultContainer.classList.add('result-container');
+                gameDisplay.parentNode.insertBefore(resultContainer, gameDisplay);
+                // container.appendChild(resultContainer);
+                const resultMessage = document.createElement('h2');
+                resultMessage.innerText = result;
+                resultContainer.appendChild(resultMessage);
+                const playAgainBtn = document.createElement('button');
+                playAgainBtn.innerText = "Play Again";
+                resultContainer.appendChild(playAgainBtn);
+                playAgainBtn.addEventListener('click', clearBoard);
+            }
 
 
             function checkThreeInARow() {
@@ -63,9 +95,30 @@ function createBoard(playerFactory) {
                     ((movesArray[2] === movesArray[5] && movesArray[5] === movesArray[8]) && movesArray[2] !== "") ||
                     ((movesArray[0] === movesArray[4] && movesArray[4] === movesArray[8]) && movesArray[0] !== "") ||
                     ((movesArray[2] === movesArray[4] && movesArray[4] === movesArray[6]) && movesArray[2] !== "")) {
-                        console.log("winner");
-                        result = "Winner!";
+                        //need to know what the icon is that got three in a row
+                        result = " wins!";
+                        displayResults();
                 }
+
+                // if ((movesArray[0] === movesArray[1] && movesArray[1] === movesArray[2]) && movesArray[0] !== "") {
+                //     let winner = movesArray[0];
+                //     result = winner + " wins!";
+                // } else if ((movesArray[3] === movesArray[4] && movesArray[4] === movesArray[5]) && movesArray[3] !== "") {
+                //     let winner = movesArray[3];
+                // } else if ((movesArray[6] === movesArray[7] && movesArray[7] === movesArray[8]) && movesArray[6] !== "") {
+                //     let winner = movesArray[6];
+                // } else if ((movesArray[0] === movesArray[3] && movesArray[3] === movesArray[6]) && movesArray[0] !== "") {
+                //     let winner = movesArray[0];
+                // } else if ((movesArray[1] === movesArray[4] && movesArray[4] === movesArray[7]) && movesArray[1] !== "") {
+                //     let winner = movesArray[1];
+                // } else if ((movesArray[2] === movesArray[5] && movesArray[5] === movesArray[8]) && movesArray[2] !== "") {
+                //     let winner = movesArray[2];
+                // } else if ((movesArray[0] === movesArray[4] && movesArray[4] === movesArray[8]) && movesArray[0] !== "") {
+                //     let winner = movesArray[0];
+                // } else if ((movesArray[2] === movesArray[4] && movesArray[4] === movesArray[6]) && movesArray[2] !== "") {
+                //     let winner = movesArray[2];
+                // }
+                //     result = winner + " wins!";
             }
 
             function checkForADraw() {
@@ -77,21 +130,6 @@ function createBoard(playerFactory) {
                 }
             }
             
-
-
-
-            // console.log("Is it player 1's turn? " + playerX.turn);
-            // if (playerX.turn) {
-            //     console.log("it's player 1's turn");
-            //     addIcon.innerText = icon;
-            //     playerX.turn = "false";
-            //     playerO.turn = "true";
-            // } else if (playerO.turn) {
-            //     addIcon.innerText = icon;
-            //     playerO.turn = "false";
-            //     playerX.turn = "true";
-            // }
-
             function clearBoard() {
                 const moves = document.querySelectorAll('.move');
                 moves.forEach(move => {
@@ -104,7 +142,7 @@ function createBoard(playerFactory) {
             }
         })
     })
-}
+// }
 
 
 
