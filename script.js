@@ -50,98 +50,114 @@ let winner;
                     movesArray.splice(indexNum, 1, playerX.getIcon());
                     playerX.toggleTurn();
                     playerO.toggleTurn();
-                    return indexNum;
                 } else {
                     addIcon.innerText = playerO.getIcon();
                     let indexNum = +e.target.id - 1;
                     movesArray.splice(indexNum, 1, playerO.getIcon());
                     playerO.toggleTurn();
                     playerX.toggleTurn();
-                    return indexNum;
                 }
             }
             checkThreeInARow();
-            checkForADraw();
-
-            if(result = " wins!") {
-                const winner = movesArray[indexNum];
-                finalResult = winner + result;
-            } else if (result = "It's a draw!") {
-                finalResult = result;
-            }
-            
-            
-            function displayResults() {
-                const resultContainer = document.createElement('div');
-                resultContainer.classList.add('result-container');
-                gameDisplay.parentNode.insertBefore(resultContainer, gameDisplay);
-                // container.appendChild(resultContainer);
-                const resultMessage = document.createElement('h2');
-                resultMessage.innerText = result;
-                resultContainer.appendChild(resultMessage);
-                const playAgainBtn = document.createElement('button');
-                playAgainBtn.innerText = "Play Again";
-                resultContainer.appendChild(playAgainBtn);
-                playAgainBtn.addEventListener('click', clearBoard);
-            }
-
-
-            function checkThreeInARow() {
-                if (((movesArray[0] === movesArray[1] && movesArray[1] === movesArray[2]) && movesArray[0] !== "") ||
-                    ((movesArray[3] === movesArray[4] && movesArray[4] === movesArray[5]) && movesArray[3] !== "") ||
-                    ((movesArray[6] === movesArray[7] && movesArray[7] === movesArray[8]) && movesArray[6] !== "") ||
-                    ((movesArray[0] === movesArray[3] && movesArray[3] === movesArray[6]) && movesArray[0] !== "") ||
-                    ((movesArray[1] === movesArray[4] && movesArray[4] === movesArray[7]) && movesArray[1] !== "") ||
-                    ((movesArray[2] === movesArray[5] && movesArray[5] === movesArray[8]) && movesArray[2] !== "") ||
-                    ((movesArray[0] === movesArray[4] && movesArray[4] === movesArray[8]) && movesArray[0] !== "") ||
-                    ((movesArray[2] === movesArray[4] && movesArray[4] === movesArray[6]) && movesArray[2] !== "")) {
-                        //need to know what the icon is that got three in a row
-                        result = " wins!";
-                        displayResults();
-                }
-
-                // if ((movesArray[0] === movesArray[1] && movesArray[1] === movesArray[2]) && movesArray[0] !== "") {
-                //     let winner = movesArray[0];
-                //     result = winner + " wins!";
-                // } else if ((movesArray[3] === movesArray[4] && movesArray[4] === movesArray[5]) && movesArray[3] !== "") {
-                //     let winner = movesArray[3];
-                // } else if ((movesArray[6] === movesArray[7] && movesArray[7] === movesArray[8]) && movesArray[6] !== "") {
-                //     let winner = movesArray[6];
-                // } else if ((movesArray[0] === movesArray[3] && movesArray[3] === movesArray[6]) && movesArray[0] !== "") {
-                //     let winner = movesArray[0];
-                // } else if ((movesArray[1] === movesArray[4] && movesArray[4] === movesArray[7]) && movesArray[1] !== "") {
-                //     let winner = movesArray[1];
-                // } else if ((movesArray[2] === movesArray[5] && movesArray[5] === movesArray[8]) && movesArray[2] !== "") {
-                //     let winner = movesArray[2];
-                // } else if ((movesArray[0] === movesArray[4] && movesArray[4] === movesArray[8]) && movesArray[0] !== "") {
-                //     let winner = movesArray[0];
-                // } else if ((movesArray[2] === movesArray[4] && movesArray[4] === movesArray[6]) && movesArray[2] !== "") {
-                //     let winner = movesArray[2];
-                // }
-                //     result = winner + " wins!";
-            }
-
-            function checkForADraw() {
-                if (movesArray[0] !== "" && movesArray[1] !== "" && movesArray[2] !== "" && movesArray[3] !== "" &&
-                    movesArray[4] !== "" && movesArray[5] !== "" && movesArray[6] !== "" && movesArray[7] !== "" && 
-                    movesArray[8] !== "") {
-                        console.log("it's a draw!");
-                        result = "It's a draw!";
-                }
-            }
-            
-            function clearBoard() {
-                const moves = document.querySelectorAll('.move');
-                moves.forEach(move => {
-                    const parent = move.parentNode;
-                    parent.removeChild(move);
-                })
-                let movesArray = ["","","","","","","","",""];
-                console.log("board cleared");
-                console.log(movesArray);
-            }
         })
-    })
+    })       
+            
+    function displayResults() {
+         const resultContainer = document.createElement('div');
+        resultContainer.classList.add('result-container');
+        gameDisplay.parentNode.insertBefore(resultContainer, gameDisplay);
+        const resultMessage = document.createElement('h2');
+        resultMessage.innerText = result;
+        resultContainer.appendChild(resultMessage);
+        const playAgainBtn = document.createElement('button');
+        playAgainBtn.innerText = "Play Again";
+        resultContainer.appendChild(playAgainBtn);
+        playAgainBtn.addEventListener('click', clearBoard);
+    }
+
+    function checkThreeInARow() {
+        if (movesArray[0] === "X" && movesArray[1] === "X" && movesArray[2] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[0] === "O" && movesArray[1] === "O" && movesArray[2] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[3] === "X" && movesArray[4] === "X" && movesArray[5] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[3] === "O" && movesArray[4] === "O" && movesArray[5] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[6] === "X" && movesArray[7] === "X" && movesArray[8] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[6] === "O" && movesArray[7] === "O" && movesArray[8] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[0] === "X" && movesArray[3] === "X" && movesArray[6] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[0] === "O" && movesArray[3] === "O" && movesArray[6] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[1] === "X" && movesArray[4] === "X" && movesArray[7] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[1] === "O" && movesArray[4] === "O" && movesArray[7] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[2] === "X" && movesArray[5] === "X" && movesArray[8] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[2] === "O" && movesArray[5] === "O" && movesArray[8] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[0] === "X" && movesArray[4] === "X" && movesArray[8] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[0] === "O" && movesArray[4] === "O" && movesArray[8] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (movesArray[2] === "X" && movesArray[4] === "X" && movesArray[6] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (movesArray[2] === "O" && movesArray[4] === "O" && movesArray[6] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if ((!movesArray.includes(""))) {
+            checkForADraw();
+        }
+}
+
+    function checkForADraw() {
+        if (!movesArray.includes("")) {
+            if (movesArray[0] !== "" && movesArray[1] !== "" && movesArray[2] !== "" && movesArray[3] !== "" &&
+                movesArray[4] !== "" && movesArray[5] !== "" && movesArray[6] !== "" && movesArray[7] !== "" && 
+                movesArray[8] !== "") {
+                    console.log("it's a draw!");
+                    result = "It's a draw!";
+                    displayResults();
+            }
+        }
+    }
+            
+    function clearBoard() {
+        const moves = document.querySelectorAll('.move');
+        moves.forEach(move => {
+            const parent = move.parentNode;
+            parent.removeChild(move);
+        })
+        const message = document.querySelector('.result-container');
+        message.parentNode.removeChild(message);
+        if (playerO.isPlayersTurn()) {
+            playerO.toggleTurn();
+            playerX.toggleTurn();
+        }
+        movesArray = ["","","","","","","","",""];
+        console.log(movesArray);
+
+    }
+        
 // }
 
 
