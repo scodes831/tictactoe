@@ -1,6 +1,3 @@
-
-
-//Player factory
 const playerFactory = (name, icon, isCurrentPlayer) => {
     getIcon = () => icon;
     isPlayersTurn = () => isCurrentPlayer;
@@ -22,9 +19,7 @@ const gameDisplay = document.querySelector('.game');
 const spaces = document.querySelectorAll('.space');
 const container = document.querySelector('.container');
 
-//Take turn module
 const takeTurn = (() => {
-
     const startBtn = document.getElementById('start-btn');
     
     startBtn.addEventListener('click', e => {
@@ -44,7 +39,7 @@ const takeTurn = (() => {
                     if(playerX.isPlayersTurn()) {
                         addIcon.innerText = playerX.getIcon();
                         let indexNum = +e.target.id - 1;
-                        movesArray.splice(indexNum, 1, playerX.getIcon());
+                        takeTurn.movesArray.splice(indexNum, 1, playerX.getIcon());
                         //not adding selection to movesArray on second round onward
                         console.log(playerX.getIcon());
                         playerX.toggleTurn();
@@ -52,7 +47,7 @@ const takeTurn = (() => {
                     } else {
                         addIcon.innerText = playerO.getIcon();
                         let indexNum = +e.target.id - 1;
-                        movesArray.splice(indexNum, 1, playerO.getIcon());
+                        takeTurn.movesArray.splice(indexNum, 1, playerO.getIcon());
                         console.log(playerO.getIcon());
                         playerO.toggleTurn();
                         playerX.toggleTurn();
@@ -68,7 +63,7 @@ const takeTurn = (() => {
     }
 })();
 
-//Game Results module
+
 const gameResults = (() => {
 
     let result = "";
@@ -175,78 +170,3 @@ const gameResults = (() => {
 
 takeTurn.showMove();
 gameResults.checkThreeInARow();
-
-
-
-
-
-
-
-// //Player Factory
-// const createPlayer = (name, icon, turn) => {
-//     const player  = {};
-//     const takeTurn = () => {
-//         // addMove();
-//     }
-//     return {name, icon, turn, player, takeTurn};
-// }
-
-// //Gameboard Module
-// const gameboard = (() => {
-//     const startBtn = document.getElementById('start-btn');
-//     const homeScreen = document.querySelector('.home');
-//     const gameDisplay = document.querySelector('.game');
-
-//     startBtn.addEventListener('click', e => {
-//         const hideHomeScreen = homeScreen.style.display = "none";
-//         const showGameboard = gameDisplay.style.display = "grid";
-//     })
-
-//     let movesArray = ["","","","","","","", "",""];
-//     createBoard();
-//     function createBoard() {
-//         for (let i=1; i <= movesArray.length; i++) {
-//             const gameSpaces = document.createElement('div');
-//             gameSpaces.classList.add('spaces');
-//             gameDisplay.appendChild(gameSpaces);
-//             function addMove() {
-//                 gameSpaces.forEach(space => {
-//                     space.addEventListener('click', e => {
-//                         if (space.childNodes.length === 0) {
-//                             const newMove = document.createElement('h2');
-//                             newMove.innerText = icon;
-//                             space.appendChild(newMove);
-//                         }
-//                     })
-//                 })
-//             }
-//         }
-//     }
-
-//     return {movesArray, createBoard};
-// })
-
-
-// //Game Module
-// const game = (() => {
-//     const playerX = createPlayer('Player 1', 'X', 'true');
-//     const playerO = createPlayer('Player 2', 'O', 'false');
-
-//     // gameboard.createBoard.call(game);
-
-//     function checkThreeInARow() {
-//         if ((movesArray[0] === movesArray[1] && movesArray[1] === movesArray[2]) ||
-//             (movesArray[3] === movesArray[4] && movesArray[4] === movesArray[5]) ||
-//             (movesArray[6] === movesArray[7] && movesArray[7] === movesArray[8]) ||
-//             (movesArray[0] === movesArray[3] && movesArray[3] === movesArray[6]) ||
-//             (movesArray[1] === movesArray[4] && movesArray[4] === movesArray[7]) ||
-//             (movesArray[2] === movesArray[5] && movesArray[5] === movesArray[8]) ||
-//             (movesArray[0] === movesArray[4] && movesArray[4] === movesArray[8]) ||
-//             (movesArray[2] === movesArray[4] && movesArray[4] === movesArray[6])) {
-//                 //what to do if there is a win
-//             } else {
-//                 //what to do if there isn't a win
-//             }
-//     }
-//     return {playerX, playerO};
-// })();
