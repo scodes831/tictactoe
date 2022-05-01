@@ -1,21 +1,9 @@
-const startBtn = document.getElementById('start-btn');
-const homeScreen = document.querySelector('.home');
-const gameDisplay = document.querySelector('.game');
-const spaces = document.querySelectorAll('.space');
-const container = document.querySelector('.container');
 
-startBtn.addEventListener('click', e => {
-    const hideHomeScreen = homeScreen.style.display = "none";
-    const showGameboard = gameDisplay.style.display = "grid";
-})
 
 //Player factory
 const playerFactory = (name, icon, isCurrentPlayer) => {
     getIcon = () => icon;
     isPlayersTurn = () => isCurrentPlayer;
-    takeTurn = () => {
-        console.log("I am taking a turn");
-    }
     toggleTurn = () => {
         if (isCurrentPlayer) {
             isCurrentPlayer = false;
@@ -23,47 +11,136 @@ const playerFactory = (name, icon, isCurrentPlayer) => {
             isCurrentPlayer = true;
         }
     }
-    return {getIcon, isPlayersTurn, takeTurn, toggleTurn}
+    return {getIcon, isPlayersTurn, toggleTurn}
 }
 
 const playerX = playerFactory("Player 1", "X", true);
 const playerO = playerFactory("Player 2", "O", false);
 
-let movesArray = ["","","","","","","","",""];
-let result;
-let finalResult;
-let winner;
+const homeScreen = document.querySelector('.home');
+const gameDisplay = document.querySelector('.game');
+const spaces = document.querySelectorAll('.space');
+const container = document.querySelector('.container');
 
-// createBoard();
+//Take turn module
+const takeTurn = (() => {
 
-// function createBoard(playerFactory) {
+    const startBtn = document.getElementById('start-btn');
+    
+    startBtn.addEventListener('click', e => {
+        const hideHomeScreen = homeScreen.style.display = "none";
+        const showGameboard = gameDisplay.style.display = "grid";
+    })
 
-    spaces.forEach(space => {
-        space.addEventListener('click', e => {
-            if (space.childNodes.length === 0) {
-                const addIcon = document.createElement('h2');
-                addIcon.classList.add('move');
-                space.appendChild(addIcon);
-                if(playerX.isPlayersTurn()) {
-                    addIcon.innerText = playerX.getIcon();
-                    let indexNum = +e.target.id - 1;
-                    movesArray.splice(indexNum, 1, playerX.getIcon());
-                    playerX.toggleTurn();
-                    playerO.toggleTurn();
-                } else {
-                    addIcon.innerText = playerO.getIcon();
-                    let indexNum = +e.target.id - 1;
-                    movesArray.splice(indexNum, 1, playerO.getIcon());
-                    playerO.toggleTurn();
-                    playerX.toggleTurn();
+    let movesArray = ["","","","","","","","",""];
+    
+    const showMove = () => {
+        spaces.forEach(space => {
+            space.addEventListener('click', e => {
+                if (space.childNodes.length === 0) {
+                    const addIcon = document.createElement('h2');
+                    addIcon.classList.add('move');
+                    space.appendChild(addIcon);
+                    if(playerX.isPlayersTurn()) {
+                        addIcon.innerText = playerX.getIcon();
+                        let indexNum = +e.target.id - 1;
+                        movesArray.splice(indexNum, 1, playerX.getIcon());
+                        //not adding selection to movesArray on second round onward
+                        console.log(playerX.getIcon());
+                        playerX.toggleTurn();
+                        playerO.toggleTurn();
+                    } else {
+                        addIcon.innerText = playerO.getIcon();
+                        let indexNum = +e.target.id - 1;
+                        movesArray.splice(indexNum, 1, playerO.getIcon());
+                        console.log(playerO.getIcon());
+                        playerO.toggleTurn();
+                        playerX.toggleTurn();
+                    }
                 }
+                gameResults.checkThreeInARow();
+            })
+    })}
+
+    return {
+        showMove,
+        movesArray,
+    }
+})();
+
+//Game Results module
+const gameResults = (() => {
+
+    let result = "";
+
+    const checkThreeInARow = () => {
+        if (takeTurn.movesArray[0] === "X" && takeTurn.movesArray[1] === "X" && takeTurn.movesArray[2] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[0] === "O" && takeTurn.movesArray[1] === "O" && takeTurn.movesArray[2] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[3] === "X" && takeTurn.movesArray[4] === "X" && takeTurn.movesArray[5] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[3] === "O" && takeTurn.movesArray[4] === "O" && takeTurn.movesArray[5] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[6] === "X" && takeTurn.movesArray[7] === "X" && takeTurn.movesArray[8] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[6] === "O" && takeTurn.movesArray[7] === "O" && takeTurn.movesArray[8] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[0] === "X" && takeTurn.movesArray[3] === "X" && takeTurn.movesArray[6] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[0] === "O" && takeTurn.movesArray[3] === "O" && takeTurn.movesArray[6] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[1] === "X" && takeTurn.movesArray[4] === "X" && takeTurn.movesArray[7] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[1] === "O" && takeTurn.movesArray[4] === "O" && takeTurn.movesArray[7] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[2] === "X" && takeTurn.movesArray[5] === "X" && takeTurn.movesArray[8] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[2] === "O" && takeTurn.movesArray[5] === "O" && takeTurn.movesArray[8] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[0] === "X" && takeTurn.movesArray[4] === "X" && takeTurn.movesArray[8] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[0] === "O" && takeTurn.movesArray[4] === "O" && takeTurn.movesArray[8] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[2] === "X" && takeTurn.movesArray[4] === "X" && takeTurn.movesArray[6] === "X") {
+            result = "X wins!";
+            displayResults();
+        } else if (takeTurn.movesArray[2] === "O" && takeTurn.movesArray[4] === "O" && takeTurn.movesArray[6] === "O") {
+            result = "O wins!";
+            displayResults();
+        } else if ((!takeTurn.movesArray.includes(""))) {
+            checkForADraw();
+        }
+    }
+
+    const checkForADraw = () => {
+        if (!takeTurn.movesArray.includes("")) {
+            if (takeTurn.movesArray[0] !== "" && takeTurn.movesArray[1] !== "" && takeTurn.movesArray[2] !== "" && takeTurn.movesArray[3] !== "" &&
+                takeTurn.movesArray[4] !== "" && takeTurn.movesArray[5] !== "" && takeTurn.movesArray[6] !== "" && takeTurn.movesArray[7] !== "" && 
+                takeTurn.movesArray[8] !== "") {
+                    console.log("it's a draw!");
+                    result = "It's a draw!";
+                    displayResults();
             }
-            checkThreeInARow();
-        })
-    })       
-            
-    function displayResults() {
-         const resultContainer = document.createElement('div');
+        }
+    }
+
+    const displayResults = () => {
+        const resultContainer = document.createElement('div');
         resultContainer.classList.add('result-container');
         gameDisplay.parentNode.insertBefore(resultContainer, gameDisplay);
         const resultMessage = document.createElement('h2');
@@ -75,73 +152,7 @@ let winner;
         playAgainBtn.addEventListener('click', clearBoard);
     }
 
-    function checkThreeInARow() {
-        if (movesArray[0] === "X" && movesArray[1] === "X" && movesArray[2] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[0] === "O" && movesArray[1] === "O" && movesArray[2] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[3] === "X" && movesArray[4] === "X" && movesArray[5] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[3] === "O" && movesArray[4] === "O" && movesArray[5] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[6] === "X" && movesArray[7] === "X" && movesArray[8] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[6] === "O" && movesArray[7] === "O" && movesArray[8] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[0] === "X" && movesArray[3] === "X" && movesArray[6] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[0] === "O" && movesArray[3] === "O" && movesArray[6] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[1] === "X" && movesArray[4] === "X" && movesArray[7] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[1] === "O" && movesArray[4] === "O" && movesArray[7] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[2] === "X" && movesArray[5] === "X" && movesArray[8] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[2] === "O" && movesArray[5] === "O" && movesArray[8] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[0] === "X" && movesArray[4] === "X" && movesArray[8] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[0] === "O" && movesArray[4] === "O" && movesArray[8] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if (movesArray[2] === "X" && movesArray[4] === "X" && movesArray[6] === "X") {
-            result = "X wins!";
-            displayResults();
-        } else if (movesArray[2] === "O" && movesArray[4] === "O" && movesArray[6] === "O") {
-            result = "O wins!";
-            displayResults();
-        } else if ((!movesArray.includes(""))) {
-            checkForADraw();
-        }
-}
-
-    function checkForADraw() {
-        if (!movesArray.includes("")) {
-            if (movesArray[0] !== "" && movesArray[1] !== "" && movesArray[2] !== "" && movesArray[3] !== "" &&
-                movesArray[4] !== "" && movesArray[5] !== "" && movesArray[6] !== "" && movesArray[7] !== "" && 
-                movesArray[8] !== "") {
-                    console.log("it's a draw!");
-                    result = "It's a draw!";
-                    displayResults();
-            }
-        }
-    }
-            
-    function clearBoard() {
+    const clearBoard = () => {
         const moves = document.querySelectorAll('.move');
         moves.forEach(move => {
             const parent = move.parentNode;
@@ -153,12 +164,19 @@ let winner;
             playerO.toggleTurn();
             playerX.toggleTurn();
         }
-        movesArray = ["","","","","","","","",""];
-        console.log(movesArray);
-
+        takeTurn.movesArray = ["","","","","","","","",""];
+        console.log(takeTurn.movesArray);    
     }
         
-// }
+    return {
+        checkThreeInARow,
+    }
+})();
+
+takeTurn.showMove();
+gameResults.checkThreeInARow();
+
+
 
 
 
